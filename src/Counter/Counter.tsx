@@ -1,30 +1,49 @@
 import React from 'react';
 import style from './Counter.module.css'
-import {Button} from "./Button";
-import {Display} from "./Display";
+import {Button} from "./Button/Button";
+import {Display} from "./Display/Display";
 
 type CounterType = {
-    setCount: (count: number) => void
-    count: number
+    setStartCount: (startCount: number) => void
+    startCount: number
+    maxCount: number
     addStyle: string
     resetStyle: string
+    displayInform: string
+    setDisplayInform: (displayInform: string)=>void
+    isActive: boolean
 }
 
-export const Counter: React.FC<CounterType> = ({setCount, count, addStyle, resetStyle}) => {
-    const startValue = 0;
-    const maxValue = 5;
+export const Counter: React.FC<CounterType> = ({
+                                                   setStartCount,
+                                                   startCount,
+                                                   addStyle,
+                                                   resetStyle,
+                                                   maxCount,
+                                                   displayInform,
+                                                   setDisplayInform,
+                                                   isActive
+}) => {
 
-    const onAddClickHandler = () => {
-        setCount(count + 1);
-    };
-    const onResetClickHandler = () => setCount(0);
+    const onAddClickHandler = () => setStartCount(startCount + 1);
+
+    const onResetClickHandler = () => {
+        const getStartValueFromLS = localStorage.getItem('startCount');
+        if (getStartValueFromLS) setStartCount(JSON.parse(getStartValueFromLS));
+    }
 
     return (
         <>
             <div className={style.counterContainer}>
 
                 <div className={style.resultContainer}>
-                    <Display output={count}/>
+                    <Display
+                        startCount={startCount}
+                        maxCount={maxCount}
+                        displayInform={displayInform}
+                        setDisplayInform={setDisplayInform}
+                        isActive={isActive}
+                    />
                 </div>
 
                 <div className={style.buttonContainer}>
@@ -33,13 +52,18 @@ export const Counter: React.FC<CounterType> = ({setCount, count, addStyle, reset
                         styleName={addStyle}
                         onClick={onAddClickHandler}
                         name='Add'
-                        disabled={count === maxValue}
+                        disabled={
+                            startCount === maxCount ||
+                            startCount < 0 ||
+                            maxCount < 0 ||
+                            startCount > maxCount ||
+                            isActive
+                        }
                     />
                     <Button
                         styleName={resetStyle}
                         onClick={onResetClickHandler}
                         name='Reset'
-                        disabled={count === startValue}
                     />
 
                 </div>

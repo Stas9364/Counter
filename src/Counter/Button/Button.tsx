@@ -3,8 +3,8 @@ import React from 'react';
 type ButtonProps = {
     onClick: () => void
     name: string
-    styleName: string
-    disabled: boolean
+    styleName?: string
+    disabled?: boolean
 }
 
 export const Button: React.FC<ButtonProps> = ({onClick, name, styleName, disabled}) => {

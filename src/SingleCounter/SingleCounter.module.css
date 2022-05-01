@@ -1,23 +1,10 @@
 .counterContainer {
-    width: 250px;
+    width: 373px;
     height: 160px;
-    border: 3px solid #41ead4;
+    border: 3px solid rgb(65 234 212);
     border-radius: 15px;
-    margin: 14px;
 }
-
-.resultContainer {
-    width: 230px;
-    height: 80px;
-    margin: 10px;
-    border: 1px solid #41ead4;
-    border-radius: 15px;
-    text-align: center;
-    font-size: 50px;
-    font-weight: bold;
-    background-color: #41ead4;
-}
-
+/*//#41ead4*/
 .displayRed {
     color: red;
 }
@@ -26,10 +13,19 @@
     font-size: 18px;
 }
 
+.resultContainer {
+    margin: 10px 10px 10px 10px;
+    width: 350px;
+    height: 80px;
+    border: 1px solid #41ead4;
+    border-radius: 10px;
+    text-align: center;
+    background-color: #41ead4;
+}
 .buttonContainer {
     border: 2px solid #41ead4;
     border-radius: 15px;
-    width: 230px;
+    width: 350px;
     height: 45px;
     margin: 10px;
     box-shadow: 0 0 1px 2px #41ead4;
