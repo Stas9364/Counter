@@ -51,20 +51,29 @@ function App() {
 
     let [renderSettings, setRenderSettings] = useState(true);
 
-    const navLinkStyle = {textDecoration: 'none'};
     return (
         <div>
 
             <button>
                 <NavLink
-                    style={navLinkStyle}
+                    style={(params)=>{
+                        return {
+                            backgroundColor: params.isActive ? "#41EAD4FF" : '',
+                            textDecoration: 'none'
+                        }
+                    }}
                     to={'/Counter'}
                 >Counter </NavLink>
             </button>
 
             <button>
                 <NavLink
-                    style={navLinkStyle}
+                    style={(params)=>{
+                        return {
+                            backgroundColor: params.isActive ? "#41EAD4FF" : '',
+                            textDecoration: 'none'
+                        }
+                    }}
                     to={'/SingleCounter'}
                 >SingleCounter </NavLink>
             </button>

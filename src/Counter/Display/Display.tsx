@@ -23,6 +23,7 @@ export const Display: React.FC<DisplayType> = ({
                 startCount < 0 ||
                 maxCount < 0 ||
                 startCount > maxCount ? style.displayRed : ''}
+
             >{isActive ? <span className={style.displayInform}>{displayInform}</span> : startCount}
             </div>
         </>
