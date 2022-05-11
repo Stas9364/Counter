@@ -11,6 +11,7 @@ function App() {
     let [maxCount, setMaxCount] = useState<number>(getMaxValueFromLS());
     let [displayInform, setDisplayInform] = useState<string>('Enter value and press "set"');
     let [isActive, setIsActive] = useState(true);
+    let [renderSettings, setRenderSettings] = useState(true);
 
     function getStartValueFromLS() {
         let getStartValueFromLS = localStorage.getItem('startCount');
@@ -49,7 +50,9 @@ function App() {
     const addStyle = style.add;
     const resetStyle = style.reset;
 
-    let [renderSettings, setRenderSettings] = useState(true);
+const SetCounterMemo = React.memo(SetCounter);
+const CounterMemo = React.memo(Counter);
+const SingleCounterMemo = React.memo(SingleCounter);
 
     return (
         <div>
@@ -84,7 +87,7 @@ function App() {
                            element={<>
 
                                <div className='setCounter'>
-                                   <SetCounter
+                                   <SetCounterMemo
                                        setValueToLS={setValueToLS}
                                        setMaxCount={setMaxCount}
                                        setStartCount={setStartCount}
@@ -97,7 +100,7 @@ function App() {
                                </div>
 
                                <div className='counter'>
-                                   <Counter
+                                   <CounterMemo
                                        maxCount={maxCount}
                                        setStartCount={setStartCount}
                                        startCount={startCount}
@@ -112,7 +115,7 @@ function App() {
 
                     <Route path={'/SingleCounter'}
                            element={<>
-                               <SingleCounter
+                               <SingleCounterMemo
                                    maxCount={maxCount}
                                    setStartCount={setStartCount}
                                    startCount={startCount}

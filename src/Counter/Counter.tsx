@@ -32,12 +32,14 @@ export const Counter: React.FC<CounterType> = ({
         if (getStartValueFromLS) setStartCount(JSON.parse(getStartValueFromLS));
     }
 
+    const DisplayMemo = React.memo(Display);
+
     return (
         <>
             <div className={style.counterContainer}>
 
                 <div className={style.resultContainer}>
-                    <Display
+                    <DisplayMemo
                         startCount={startCount}
                         maxCount={maxCount}
                         displayInform={displayInform}
