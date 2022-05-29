@@ -4,42 +4,39 @@ import {Button} from "./Button/Button";
 import {Display} from "./Display/Display";
 
 type CounterType = {
-    setStartCount: (startCount: number) => void
     startCount: number
     maxCount: number
     addStyle: string
     resetStyle: string
     displayInform: string
-    setDisplayInform: (displayInform: string)=>void
+    setDisplayInform: (displayInform: string) => void
+    addClickHandler: () => void
+    resetClickHandler: () => void
     isActive: boolean
 }
 
 export const Counter: React.FC<CounterType> = ({
-                                                   setStartCount,
                                                    startCount,
                                                    addStyle,
                                                    resetStyle,
                                                    maxCount,
                                                    displayInform,
                                                    setDisplayInform,
+                                                   addClickHandler,
+                                                   resetClickHandler,
                                                    isActive
-}) => {
+                                               }) => {
 
-    const onAddClickHandler = () => setStartCount(startCount + 1);
+    const onAddClickHandler = () => addClickHandler();
 
-    const onResetClickHandler = () => {
-        const getStartValueFromLS = localStorage.getItem('startCount');
-        if (getStartValueFromLS) setStartCount(JSON.parse(getStartValueFromLS));
-    }
-
-    const DisplayMemo = React.memo(Display);
+    const onResetClickHandler = () => resetClickHandler();
 
     return (
         <>
             <div className={style.counterContainer}>
 
                 <div className={style.resultContainer}>
-                    <DisplayMemo
+                    <Display
                         startCount={startCount}
                         maxCount={maxCount}
                         displayInform={displayInform}

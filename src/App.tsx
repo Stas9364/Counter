@@ -5,61 +5,58 @@ import style from "./Counter/Counter.module.css";
 import {SetCounter} from "./Counter/SetCounter/SetCounter";
 import {SingleCounter} from "./SingleCounter/SingleCounter";
 import {NavLink, Route, Routes} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {AppStateType} from "./Redux/reduxStore";
+import {
+    changeMaxValueAC,
+    changeStartValueAC,
+    incrementCounterAC,
+    resetStartValueAC,
+    setResetValueAC
+} from "./Redux/counterActions";
 
 function App() {
-    let [startCount, setStartCount] = useState<number>(getStartValueFromLS());
-    let [maxCount, setMaxCount] = useState<number>(getMaxValueFromLS());
     let [displayInform, setDisplayInform] = useState<string>('Enter value and press "set"');
     let [isActive, setIsActive] = useState(true);
     let [renderSettings, setRenderSettings] = useState(true);
 
-    function getStartValueFromLS() {
-        let getStartValueFromLS = localStorage.getItem('startCount');
-        if (getStartValueFromLS) {
-            return JSON.parse(getStartValueFromLS);
-        } else {
-            return 0;
-        }
-    }
-
-    function getMaxValueFromLS() {
-        let getMaxValueFromLS = localStorage.getItem('maxCount');
-        if (getMaxValueFromLS) {
-            return JSON.parse(getMaxValueFromLS);
-        } else {
-            return 0;
-        }
-    }
 
     const setValueToLS = () => {
-        localStorage.setItem('startCount', JSON.stringify(startCount));
-        localStorage.setItem('maxCount', JSON.stringify(maxCount));
         setIsActive(false);
-
+        dispatch(setResetValueAC());
         setRenderSettings(!renderSettings);
-    }
+    };
 
     const displayOutput = () => {
-        if (startCount < 0 || maxCount < 0 || startCount > maxCount) {
+        if (startValue + 1 > maxValue) {
             setDisplayInform('Invalid value');
         } else {
             setDisplayInform('Enter value and press "set"');
         }
-    }
+    };
+
+
+    const startValue = useSelector<AppStateType>(state => state.counter.startValue) as number;
+    const maxValue = useSelector<AppStateType>(state => state.counter.maxValue) as number;
+    const dispatch = useDispatch();
+
+    const addClickHandler = () => dispatch(incrementCounterAC());
+
+    const changeStartValueHandler = (e: string) => dispatch(changeStartValueAC(Number(e)));
+
+    const changeMaxValueHandler = (e: string) => dispatch(changeMaxValueAC(Number(e)));
+
+    const resetClickHandler = () => dispatch(resetStartValueAC());
 
     const addStyle = style.add;
     const resetStyle = style.reset;
-
-const SetCounterMemo = React.memo(SetCounter);
-const CounterMemo = React.memo(Counter);
-const SingleCounterMemo = React.memo(SingleCounter);
 
     return (
         <div>
 
             <button>
                 <NavLink
-                    style={(params)=>{
+                    style={(params) => {
                         return {
                             backgroundColor: params.isActive ? "#41EAD4FF" : '',
                             textDecoration: 'none'
@@ -71,7 +68,7 @@ const SingleCounterMemo = React.memo(SingleCounter);
 
             <button>
                 <NavLink
-                    style={(params)=>{
+                    style={(params) => {
                         return {
                             backgroundColor: params.isActive ? "#41EAD4FF" : '',
                             textDecoration: 'none'
@@ -87,27 +84,28 @@ const SingleCounterMemo = React.memo(SingleCounter);
                            element={<>
 
                                <div className='setCounter'>
-                                   <SetCounterMemo
+                                   <SetCounter
                                        setValueToLS={setValueToLS}
-                                       setMaxCount={setMaxCount}
-                                       setStartCount={setStartCount}
-                                       startCount={startCount}
-                                       maxCount={maxCount}
+                                       startCount={startValue}
+                                       maxCount={maxValue}
                                        setIsActive={setIsActive}
                                        isActive={isActive}
                                        displayOutput={displayOutput}
+                                       changeStartValueHandler={changeStartValueHandler}
+                                       changeMaxValueHandler={changeMaxValueHandler}
                                    />
                                </div>
 
                                <div className='counter'>
-                                   <CounterMemo
-                                       maxCount={maxCount}
-                                       setStartCount={setStartCount}
-                                       startCount={startCount}
+                                   <Counter
+                                       maxCount={maxValue}
+                                       startCount={startValue}
                                        addStyle={addStyle}
                                        resetStyle={resetStyle}
                                        displayInform={displayInform}
                                        setDisplayInform={setDisplayInform}
+                                       addClickHandler={addClickHandler}
+                                       resetClickHandler={resetClickHandler}
                                        isActive={isActive}
                                    />
                                </div>
@@ -115,17 +113,19 @@ const SingleCounterMemo = React.memo(SingleCounter);
 
                     <Route path={'/SingleCounter'}
                            element={<>
-                               <SingleCounterMemo
-                                   maxCount={maxCount}
-                                   setStartCount={setStartCount}
-                                   startCount={startCount}
+                               <SingleCounter
+                                   maxCount={maxValue}
+                                   startCount={startValue}
                                    addStyle={addStyle}
                                    resetStyle={resetStyle}
                                    displayInform={displayInform}
                                    setDisplayInform={setDisplayInform}
-                                   isActive={isActive}
+                                   addClickHandler={addClickHandler}
+                                   resetClickHandler={resetClickHandler}
+                                   changeStartValueHandler={changeStartValueHandler}
+                                   changeMaxValueHandler={changeMaxValueHandler}
 
-                                   setMaxCount={setMaxCount}
+                                   isActive={isActive}
                                    setValueToLS={setValueToLS}
                                    displayOutput={displayOutput}
                                    setIsActive={setIsActive}

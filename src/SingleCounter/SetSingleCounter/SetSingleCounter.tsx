@@ -4,51 +4,54 @@ import style from './SetSingleCounter.module.css';
 import {SuperInput} from "../../Counter/SetCounter/Input";
 
 type SetCounterType = {
-    setMaxCount: (startCount: number) => void
     maxCount: number
-    setCount: (count: number) => void
     startCount: number
     setValueToLS: () => void
-    setIsActive: (isActive: boolean)=>void
+    setIsActive: (isActive: boolean) => void
     isActive: boolean
-    displayOutput: ()=>void
+    displayOutput: () => void
+
+    changeStartValueHandler: (e: string) => void
+    changeMaxValueHandler: (e: string) => void
+
 }
 
 export const SetSingleCounter: React.FC<SetCounterType> = ({
-                                                         setMaxCount,
-                                                         maxCount,
-                                                         setCount,
-                                                         startCount,
-                                                         setValueToLS,
-                                                         setIsActive,
-                                                         isActive,
-                                                         displayOutput
-}) => {
+                                                               maxCount,
+                                                               startCount,
+                                                               setValueToLS,
+                                                               setIsActive,
+                                                               isActive,
+                                                               displayOutput,
+
+                                                               changeStartValueHandler,
+                                                               changeMaxValueHandler,
+                                                           }) => {
 
     const getStartValueFromInput = (e: string) => {
-        setCount(Number(e));
+        changeStartValueHandler(e);
         displayOutput();
         setIsActive(true);
-    }
+    };
 
     const getMaxValueFromInput = (e: string) => {
-        setMaxCount(Number(e));
+        changeMaxValueHandler(e);
         displayOutput();
         setIsActive(true);
-    }
+    };
 
     const inputStyle =
-            startCount < 0 || maxCount < 0 || startCount > maxCount ? style.red : style.input;
-
+        startCount < 0 || maxCount < 0 || startCount > maxCount ? style.red : style.input;
 
     return (
         <div className={style.setCounterContainer}>
 
             <div className={style.inputsContainer}>
+
                 <div>
                     <span className={style.text}>Start value: </span>
                     <SuperInput
-                        type={"number"}
+                        type={"string"}
                         onChangeText={(e) => getStartValueFromInput(e)}
                         value={startCount}
                         placeholder={'start'}
@@ -59,7 +62,7 @@ export const SetSingleCounter: React.FC<SetCounterType> = ({
                 <div>
                     <span className={style.text}>Max value: </span>
                     <SuperInput
-                        type={"number"}
+                        type={"string"}
                         onChangeText={(e) => getMaxValueFromInput(e)}
                         value={maxCount}
                         placeholder={'max'}
@@ -74,9 +77,9 @@ export const SetSingleCounter: React.FC<SetCounterType> = ({
                     onClick={setValueToLS}
                     disabled={
                         (startCount === maxCount ||
-                        startCount < 0 ||
-                        maxCount < 0 ||
-                        startCount > maxCount) &&
+                            startCount < 0 ||
+                            maxCount < 0 ||
+                            startCount > maxCount) &&
                         isActive
                     }
                     name={'Set'}
