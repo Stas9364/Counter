@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import style from './Counter.module.css'
 import {Button} from "./Button/Button";
 import {Display} from "./Display/Display";
@@ -15,7 +15,7 @@ type CounterType = {
     isActive: boolean
 }
 
-export const Counter: React.FC<CounterType> = ({
+export const Counter: React.FC<CounterType> = React.memo (({
                                                    startCount,
                                                    addStyle,
                                                    resetStyle,
@@ -25,11 +25,9 @@ export const Counter: React.FC<CounterType> = ({
                                                    addClickHandler,
                                                    resetClickHandler,
                                                    isActive
-                                               }) => {
-
-    const onAddClickHandler = () => addClickHandler();
-
-    const onResetClickHandler = () => resetClickHandler();
+}) => {
+    const onAddClickHandler = useCallback (() => addClickHandler(), [addClickHandler]);
+    const onResetClickHandler = useCallback (() => resetClickHandler(), [resetClickHandler]);
 
     return (
         <>
@@ -69,5 +67,5 @@ export const Counter: React.FC<CounterType> = ({
             </div>
         </>
     );
-};
+} );
 

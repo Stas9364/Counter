@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useCallback, useState} from 'react';
 import './App.css';
 import {Counter} from "./Counter/Counter";
 import style from "./Counter/Counter.module.css";
@@ -15,38 +15,34 @@ import {
     setResetValueAC
 } from "./Redux/counterActions";
 
-function App() {
+const App = React.memo (() => {
+    const startValue = useSelector<AppStateType>(state => state.counter.startValue) as number;
+    const maxValue = useSelector<AppStateType>(state => state.counter.maxValue) as number;
+    const dispatch = useDispatch();
+
     let [displayInform, setDisplayInform] = useState<string>('Enter value and press "set"');
     let [isActive, setIsActive] = useState(true);
     let [renderSettings, setRenderSettings] = useState(true);
 
-
-    const setValueToLS = () => {
+    const setValueToLS = useCallback (() => {
         setIsActive(false);
         dispatch(setResetValueAC());
         setRenderSettings(!renderSettings);
-    };
+    },[dispatch, renderSettings]);
 
-    const displayOutput = () => {
+    const displayOutput = useCallback (() => {
         if (startValue + 1 > maxValue) {
             setDisplayInform('Invalid value');
         } else {
             setDisplayInform('Enter value and press "set"');
         }
-    };
+    }, [maxValue, startValue]);
 
 
-    const startValue = useSelector<AppStateType>(state => state.counter.startValue) as number;
-    const maxValue = useSelector<AppStateType>(state => state.counter.maxValue) as number;
-    const dispatch = useDispatch();
-
-    const addClickHandler = () => dispatch(incrementCounterAC());
-
-    const changeStartValueHandler = (e: string) => dispatch(changeStartValueAC(Number(e)));
-
-    const changeMaxValueHandler = (e: string) => dispatch(changeMaxValueAC(Number(e)));
-
-    const resetClickHandler = () => dispatch(resetStartValueAC());
+    const addClickHandler = useCallback (() => dispatch(incrementCounterAC()),[dispatch]);
+    const changeStartValueHandler = useCallback ((e: string) => dispatch(changeStartValueAC(Number(e))), [dispatch]);
+    const changeMaxValueHandler = useCallback ((e: string) => dispatch(changeMaxValueAC(Number(e))), [dispatch]);
+    const resetClickHandler = useCallback (() => dispatch(resetStartValueAC()), [dispatch]);
 
     const addStyle = style.add;
     const resetStyle = style.reset;
@@ -137,6 +133,6 @@ function App() {
                 </Routes>
             </div>
         </div>);
-}
+} );
 
 export default App;

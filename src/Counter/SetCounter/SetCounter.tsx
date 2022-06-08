@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {SuperInput} from './Input';
 import {Button} from '../Button/Button';
 import style from './SetCounter.module.css';
@@ -14,7 +14,7 @@ type SetCounterType = {
     changeMaxValueHandler: (e: string)=>void
 }
 
-export const SetCounter: React.FC<SetCounterType> = ({
+export const SetCounter: React.FC<SetCounterType> = React.memo (({
                                                          maxCount,
                                                          startCount,
                                                          setValueToLS,
@@ -24,19 +24,17 @@ export const SetCounter: React.FC<SetCounterType> = ({
                                                          changeStartValueHandler,
                                                          changeMaxValueHandler
 }) => {
-
-    const getStartValueFromInput = (e: string) => {
-        changeStartValueHandler(e)
+    const getStartValueFromInput = useCallback ((e: string) => {
+        changeStartValueHandler(e);
         displayOutput();
         setIsActive(true);
-    }
+    }, [changeStartValueHandler, displayOutput, setIsActive]);
 
-    const getMaxValueFromInput = (e: string) => {
+    const getMaxValueFromInput = useCallback ((e: string) => {
         changeMaxValueHandler(e);
-    }
+    }, [changeMaxValueHandler]);
 
     const inputStyle = startCount > maxCount ? style.red : style.input;
-
 
     return (
         <div className={style.setCounterContainer}>
@@ -76,5 +74,5 @@ export const SetCounter: React.FC<SetCounterType> = ({
             </div>
         </div>
     );
-};
+} );
 

@@ -1,8 +1,8 @@
-import {ActionType} from "./counterActions";
+import {ACTIONS_TYPE, ActionType} from "./counterActions";
 
 type InitialStateType = typeof initialState;
 
-const initialState = {
+export const initialState = {
     startValue: 0,
     maxValue: 5,
     resetValue: 0
@@ -10,27 +10,27 @@ const initialState = {
 
 export const counterReducer = (state: InitialStateType = initialState, action: ActionType): InitialStateType => {
     switch (action.type) {
-        case 'INCREMENT-COUNTER-VALUE':
+        case ACTIONS_TYPE.INCREMENT_COUNTER_VALUE:
             return {
                 ...state,
                 startValue: state.startValue + 1
             };
-        case 'CHANGE-START-VALUE':
+        case ACTIONS_TYPE.CHANGE_START_VALUE:
             return {
                 ...state,
                 startValue: action.startNumber
             };
-        case 'CHANGE-MAX-VALUE':
+        case ACTIONS_TYPE.CHANGE_MAX_VALUE:
             return {
                 ...state,
                 maxValue: action.maxValue
             };
-        case 'SET-RESET-VALUE':
+        case ACTIONS_TYPE.SET_RESET_VALUE:
             return {
                 ...state,
                 resetValue: state.startValue
             };
-        case 'RESET-START-VALUE':
+        case ACTIONS_TYPE.RESET_START_VALUE:
             return {
                 ...state,
                 startValue: state.resetValue

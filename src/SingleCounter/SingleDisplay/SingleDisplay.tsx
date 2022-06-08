@@ -9,18 +9,16 @@ type DisplayType = {
     isActive: boolean
 }
 
-export const SingleDisplay: React.FC<DisplayType> = ({
+export const SingleDisplay: React.FC<DisplayType> = React.memo (({
                                                          startCount,
                                                          maxCount,
                                                          displayInform,
                                                          isActive
                                                      }) => {
-
     const displayStyle = {
         fontSize: '55px',
         fontWeight: 'bold'
     }
-
     return (
         <>
             <div
@@ -30,5 +28,5 @@ export const SingleDisplay: React.FC<DisplayType> = ({
             </div>
         </>
     );
-};
+} );
 

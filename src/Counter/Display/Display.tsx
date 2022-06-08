@@ -9,13 +9,12 @@ type DisplayType = {
     isActive: boolean
 }
 
-export const Display: React.FC<DisplayType> = ({
+export const Display: React.FC<DisplayType> = React.memo ( ({
                                                    startCount,
                                                    maxCount,
                                                    displayInform,
                                                    isActive
 }) => {
-
     return (
         <>
             <div
@@ -28,5 +27,5 @@ export const Display: React.FC<DisplayType> = ({
             </div>
         </>
     );
-};
+} );
 

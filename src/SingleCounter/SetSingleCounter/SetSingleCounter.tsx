@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import {Button} from '../../Counter/Button/Button';
 import style from './SetSingleCounter.module.css';
 import {SuperInput} from "../../Counter/SetCounter/Input";
@@ -16,7 +16,7 @@ type SetCounterType = {
 
 }
 
-export const SetSingleCounter: React.FC<SetCounterType> = ({
+export const SetSingleCounter: React.FC<SetCounterType> = React.memo (({
                                                                maxCount,
                                                                startCount,
                                                                setValueToLS,
@@ -25,20 +25,18 @@ export const SetSingleCounter: React.FC<SetCounterType> = ({
                                                                displayOutput,
 
                                                                changeStartValueHandler,
-                                                               changeMaxValueHandler,
-                                                           }) => {
-
-    const getStartValueFromInput = (e: string) => {
+                                                               changeMaxValueHandler
+}) => {
+    const getStartValueFromInput = useCallback ((e: string) => {
         changeStartValueHandler(e);
         displayOutput();
         setIsActive(true);
-    };
-
-    const getMaxValueFromInput = (e: string) => {
+    }, [changeStartValueHandler, displayOutput, setIsActive]);
+    const getMaxValueFromInput = useCallback ((e: string) => {
         changeMaxValueHandler(e);
         displayOutput();
         setIsActive(true);
-    };
+    }, [changeMaxValueHandler, displayOutput, setIsActive]);
 
     const inputStyle =
         startCount < 0 || maxCount < 0 || startCount > maxCount ? style.red : style.input;
@@ -88,5 +86,5 @@ export const SetSingleCounter: React.FC<SetCounterType> = ({
             </div>
         </div>
     );
-};
+} );
 

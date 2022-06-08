@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useCallback} from 'react';
 import style from './SingleCounter.module.css'
 import {SingleButton} from "./SingleButton/SingleButton";
 import {SingleDisplay} from "./SingleDisplay/SingleDisplay";
@@ -24,7 +24,7 @@ type CounterType = {
     renderSettings: boolean
 }
 
-export const SingleCounter: React.FC<CounterType> = ({
+export const SingleCounter: React.FC<CounterType> = React.memo (({
                                                          startCount,
                                                          addStyle,
                                                          resetStyle,
@@ -43,14 +43,9 @@ export const SingleCounter: React.FC<CounterType> = ({
                                                          setIsActive,
                                                          setRenderSettings,
                                                          renderSettings
-                                                     }) => {
-
-    const onAddClickHandler = () => addClickHandler();
-
-    const onResetClickHandler = () => resetClickHandler();
-
-    console.log(startCount)
-    console.log(maxCount)
+}) => {
+    const onAddClickHandler = useCallback (() => addClickHandler(), [addClickHandler]);
+    const onResetClickHandler = useCallback (() => resetClickHandler(), [resetClickHandler]);
     return (
         <>
             <div className={style.counterContainer}>
@@ -113,5 +108,5 @@ export const SingleCounter: React.FC<CounterType> = ({
             </div>
         </>
     );
-};
+} );
 
